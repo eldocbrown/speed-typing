@@ -40,6 +40,7 @@
   font-size: var(--fs-body);
   font-family: var(--ff-secondary);
   width: 100%;
+  color: var(--clr-accent);
 }
 
 .inputArea:focus {
@@ -48,6 +49,7 @@
 
 .inputArea:enabled {
   background-color: var(--clr-accent);
+  color: var(--clr-dark);
 }
 
 @media (min-width: 600px) {
