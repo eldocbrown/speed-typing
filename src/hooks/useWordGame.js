@@ -1,15 +1,19 @@
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect, useRef, useReducer} from 'react'
 import { wordCounter } from '../wordCounter'
+
+function wordsReducer(words, text) {
+  return text
+}
 
 function useWordGame(
             initialTime = 15,
-            initialWords = "",
+            initialWords = '',
             initialRunning = false,
             initialWordCount = 0
           ) {
 
   // State
-  const [ words, setWords ] = useState(initialWords)
+  const [ words, wordsDispatch ] = useReducer(wordsReducer, initialWords)
   const [ time, setTime ] = useState(initialTime)
   const [ running, setRunning ] = useState(initialRunning)
   const [ wordCount, setWordCount ] = useState(initialWordCount)
@@ -23,7 +27,7 @@ function useWordGame(
     if (running) {
       if (time === 0) { // Game ended
         setRunning(false)
-        setWordCount(wordCounter(words).words)
+        setWordCount(wordCounter(textAreaRef.current.value).words)
         btnRef.current.innerHTML = "Play again"
       }
       else { // Keep running
@@ -33,16 +37,16 @@ function useWordGame(
         )
       }
     }
-  }, [time, running])
+  }, [time, running, textAreaRef])
 
   // Event Handlers
   const handleChange = (event) => {
     const { value } = event.target
-    setWords(value)
+    wordsDispatch(value)
   }
 
   const handleClick = (event) => {
-    setWords("")
+    wordsDispatch('')
     setWordCount(0)
     setTime(initialTime)
     setRunning(true)
